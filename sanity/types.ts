@@ -125,6 +125,20 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
+export type Hello = {
+  _id: string;
+  _type: "hello";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  id?: number;
+  name?: string;
+  username?: string;
+  email?: string;
+  image?: string;
+  bio?: string;
+};
+
 export type Playlist = {
   _id: string;
   _type: "playlist";
@@ -185,5 +199,5 @@ export type Author = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Playlist | Startup | Slug | Author | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Hello | Playlist | Startup | Slug | Author | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
