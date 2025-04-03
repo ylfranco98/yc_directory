@@ -193,7 +193,15 @@
 .startup-card_btn {
   @apply rounded-full bg-black-200 font-medium text-[16px] text-white px-5 !py-3;
 }
-
+.startup-card_options {
+  @apply rounded-full font-medium text-white cursor-pointer;
+}
+.startup-card_edt {
+  @apply bg-black-200;
+}
+.startup-card_dlt {
+  @apply bg-red-600;
+}
 .startup-card_skeleton {
   @apply w-full h-96 rounded-[22px] bg-zinc-400;
 }

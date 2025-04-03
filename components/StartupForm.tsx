@@ -10,14 +10,20 @@ import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createPitch } from "@/lib/actions";
+import { createPitch, updatePitch } from "@/lib/actions";
+import { StartupTypeCard } from "@/components/StartupCard";
 
-const StartupForm = () => {
+const StartupForm = ({ post }: { post: StartupTypeCard | undefined }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [pitch, setPitch] = useState("");
+  const [pitch, setPitch] = useState(post?.pitch || "");
   // const { toast } = useToast();
   const router = useRouter();
-
+  const [formState, setState] = useState({
+    title: post?.title || "",
+    description: post?.description || "",
+    category: post?.category || "",
+    link: post?.image || "",
+  });
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
       const formValues = {
@@ -30,7 +36,9 @@ const StartupForm = () => {
 
       await formSchema.parseAsync(formValues);
 
-      const result = await createPitch(prevState, formData, pitch);
+      const result = post?._id
+        ? await updatePitch(prevState, formData, pitch, post._id)
+        : await createPitch(prevState, formData, pitch);
 
       if (result.status == "SUCCESS") {
         toast.success(
@@ -92,6 +100,11 @@ const StartupForm = () => {
           className="startup-form_input"
           required
           placeholder="Startup Title"
+          autoComplete="off"
+          value={formState?.title} // Tied to state
+          onChange={(e) =>
+            setState({ ...formState, title: e?.target?.value || "" })
+          } // Update via formAction
         />
 
         {errors.title && <p className="startup-form_error">{errors.title}</p>}
@@ -107,6 +120,11 @@ const StartupForm = () => {
           className="startup-form_textarea"
           required
           placeholder="Startup Description"
+          autoComplete="off"
+          value={formState?.description} // Tied to state
+          onChange={(e) =>
+            setState({ ...formState, description: e?.target?.value || "" })
+          } // Update via formAction
         />
 
         {errors.description && (
@@ -124,6 +142,11 @@ const StartupForm = () => {
           className="startup-form_input"
           required
           placeholder="Startup Category (Tech, Health, Education...)"
+          autoComplete="off"
+          value={formState?.category} // Tied to state
+          onChange={(e) =>
+            setState({ ...formState, category: e?.target?.value || "" })
+          } // Update via formAction
         />
 
         {errors.category && (
@@ -141,6 +164,11 @@ const StartupForm = () => {
           className="startup-form_input"
           required
           placeholder="Startup Image URL"
+          autoComplete="off"
+          value={formState?.link} // Tied to state
+          onChange={(e) =>
+            setState({ ...formState, link: e?.target?.value || "" })
+          } // Update via formAction
         />
 
         {errors.link && <p className="startup-form_error">{errors.link}</p>}
@@ -152,7 +180,7 @@ const StartupForm = () => {
         </label>
 
         <MDEditor
-          value={pitch}
+          value={pitch ? pitch : ""}
           onChange={(value) => setPitch(value as string)}
           id="pitch"
           preview="edit"
@@ -173,10 +201,14 @@ const StartupForm = () => {
       <Button
         type="submit"
         className="startup-form_btn text-white"
-        // disabled={isPending}
+        disabled={isPending}
       >
-        {/* {isPending ? "Submitting..." : "Submit Your Pitch"} */}
-        Submit Your Pitch
+        {isPending
+          ? "Submitting..."
+          : post
+            ? "Submit Changes"
+            : "Submit Your Pitch"}
+
         <Send className="size-6 ml-2" />
       </Button>
     </form>

@@ -1,14 +1,24 @@
 import { cn, formatDate } from "@/lib/utils";
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, Trash2, Pencil } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Author, Startup } from "@/sanity/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import { auth } from "@/auth";
+import DeletePitchButton from "./DeletePitchButton";
 
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
-const StartupCard = ({ post }: { post: StartupTypeCard }) => {
+const StartupCard = async ({
+  post,
+  authorId,
+}: {
+  post: StartupTypeCard;
+  authorId: string | undefined;
+}) => {
+  const session = await auth();
+
   const {
     _createdAt,
     views,
@@ -60,9 +70,25 @@ const StartupCard = ({ post }: { post: StartupTypeCard }) => {
         <Link href={`/?query=${category?.toLowerCase()}`}>
           <p className="text-16-medium">{category}</p>
         </Link>
-        <Button className="startup-card_btn" asChild>
-          <Link href={`/startup/${_id}`}>Details</Link>
-        </Button>
+
+        <div className="flex gap-3">
+          <Button className="startup-card_btn" asChild>
+            <Link href={`/startup/${_id}`}>Details</Link>
+          </Button>
+          {session?.id === authorId ? (
+            <>
+              <Button className="startup-card_btn">
+                <Link href={`/startup/edit/${_id}`}>
+                  Edit
+                  {/* <Pencil className="size-5 text-white" /> */}
+                </Link>
+              </Button>
+              <DeletePitchButton _id={_id} />
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
     </li>
   );
