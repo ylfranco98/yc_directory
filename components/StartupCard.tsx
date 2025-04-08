@@ -70,25 +70,24 @@ const StartupCard = async ({
         <Link href={`/?query=${category?.toLowerCase()}`}>
           <p className="text-16-medium">{category}</p>
         </Link>
-
-        <div className="flex gap-3">
-          <Button className="startup-card_btn" asChild>
-            <Link href={`/startup/${_id}`}>Details</Link>
-          </Button>
-          {session?.id === authorId ? (
-            <>
-              <Button className="startup-card_btn">
-                <Link href={`/startup/edit/${_id}`}>
-                  Edit
-                  {/* <Pencil className="size-5 text-white" /> */}
-                </Link>
-              </Button>
-              <DeletePitchButton _id={_id} />
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
+      </div>
+      <div className="flex justify-end mt-5 gap-3">
+        <Button className="startup-card_btn" asChild>
+          <Link href={`/startup/${_id}`}>Details</Link>
+        </Button>
+        {session?.id === authorId ? (
+          <>
+            <Button className="startup-card_btn">
+              <Link href={`/startup/edit/${_id}`}>
+                Edit
+                {/* <Pencil className="size-5 text-white" /> */}
+              </Link>
+            </Button>
+            <DeletePitchButton _id={_id} />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </li>
   );
