@@ -75,6 +75,7 @@ const StartupCard = async ({
         <Button className="startup-card_btn" asChild>
           <Link href={`/startup/${_id}`}>Details</Link>
         </Button>
+
         {session?.id === authorId ? (
           <>
             <Button className="startup-card_btn">
