@@ -6,8 +6,8 @@ import { apiVersion, dataset, projectId, token } from "../env";
 export const writeClient = createClient({
   projectId,
   dataset,
-  apiVersion,
-  useCdn: false,
+  apiVersion: "v2021-03-25",
+  useCdn: true,
   token,
 });
 
